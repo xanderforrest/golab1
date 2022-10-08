@@ -2,7 +2,7 @@ package main
 
 func calculateNextState(p golParams, world [][]byte) [][]byte {
 	for i := 0; i < p.imageWidth; i++ {
-		for j := 0; i < p.imageHeight; j++ {
+		for j := 0; j < p.imageHeight; j++ {
 			var aliveNeighbours = getLiveNeighbours(p, world, i, j)
 			if isAlive(world[i][j]) {
 				if aliveNeighbours < 4 {
@@ -32,26 +32,26 @@ func getLiveNeighbours(p golParams, world [][]byte, a, b int) int {
 	var heightDown int
 
 	if a == 0 {
-		widthLeft = p.imageWidth
+		widthLeft = p.imageWidth - 1
 	} else {
 		widthLeft = a - 1
 	}
-	if a == p.imageWidth {
+	if a == p.imageWidth-1 {
 		widthRight = 0
 	} else {
 		widthRight = a + 1
 	}
 
 	if b == 0 {
-		heightUp = p.imageHeight
-	} else {
-		heightUp = b + 1
-	}
-
-	if b == p.imageHeight {
-		heightDown = 0
+		heightUp = p.imageHeight - 1
 	} else {
 		heightUp = b - 1
+	}
+
+	if b == p.imageHeight-1 {
+		heightDown = 0
+	} else {
+		heightDown = b + 1
 	}
 
 	if isAlive(world[widthLeft][b]) {
@@ -92,7 +92,7 @@ func calculateAliveCells(p golParams, world [][]byte) []cell {
 	var cells []cell
 
 	for i := 0; i < p.imageWidth; i++ {
-		for j := 0; i < p.imageHeight; j++ {
+		for j := 0; j < p.imageHeight; j++ {
 			if isAlive(world[i][j]) {
 				cells = append(cells, cell{i, j})
 			}
