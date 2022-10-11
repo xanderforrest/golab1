@@ -1,27 +1,36 @@
 package main
 
 func calculateNextState(p golParams, world [][]byte) [][]byte {
+
+	newWorld := make([][]uint8, p.imageWidth)
+	for i := range newWorld {
+		newWorld[i] = make([]uint8, p.imageHeight)
+	}
+
 	for i := 0; i < p.imageWidth; i++ {
 		for j := 0; j < p.imageHeight; j++ {
 			var aliveNeighbours = getLiveNeighbours(p, world, i, j)
 			if isAlive(world[i][j]) {
 				if aliveNeighbours < 4 {
 					if aliveNeighbours > 1 {
+						newWorld[i][j] = world[i][j]
 						// pass really doesn't exist in golang????????
 					} else {
-						world[i][j] = 0
+						newWorld[i][j] = 0
 					}
 				} else {
-					world[i][j] = 0
+					newWorld[i][j] = 0
 				}
 			} else {
 				if aliveNeighbours == 3 {
-					world[i][j] = 255
+					newWorld[i][j] = 255
+				} else {
+					newWorld[i][j] = 0
 				}
 			}
 		}
 	}
-	return world
+	return newWorld
 }
 
 func getLiveNeighbours(p golParams, world [][]byte, a, b int) int {
@@ -94,10 +103,10 @@ func calculateAliveCells(p golParams, world [][]byte) []cell {
 	for i := 0; i < p.imageWidth; i++ {
 		for j := 0; j < p.imageHeight; j++ {
 			if isAlive(world[i][j]) {
-				cells = append(cells, cell{i, j})
+				cells = append(cells, cell{j, i})
 			}
 		}
 	}
 
-	return []cell{}
+	return cells
 }
